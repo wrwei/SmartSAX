@@ -43,7 +43,7 @@ public class SmartSAXLoad {
 		modelUri = URI.createURI(fileName);
 	}
 	
-	public void preProcess() throws Exception
+	public void reconcileEffectiveMetamodel() throws Exception
 	{
 		ResourceSet resourceSet = createResourceSet();
 		

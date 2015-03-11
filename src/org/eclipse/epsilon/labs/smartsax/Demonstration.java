@@ -37,7 +37,7 @@ public class Demonstration {
 		smartSAXLoad.setModelUri("model/set0.xmi");
 
 		smartSAXLoad.addEffectiveMetamodel(DOM);
-		smartSAXLoad.preProcess();
+		smartSAXLoad.reconcileEffectiveMetamodel();
 		
 		System.out.println("loading...");
 		smartSAXLoad.loadModelFromUri();
