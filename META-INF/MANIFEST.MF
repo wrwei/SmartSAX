@@ -3,4 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: org.eclipse.emf.FlexSAX
 Bundle-SymbolicName: org.eclipse.emf.SmartSAX;singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Require-Bundle: org.eclipse.emf.ecore
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi
