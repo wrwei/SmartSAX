@@ -1,6 +1,6 @@
-package org.eclipse.emf.SmartSAX.impl;
+package org.eclipse.epsilon.labs.smartsax;
 
-import org.eclipse.emf.SmartSAX.effectiveMetamodel.EffectiveMetamodel;
+import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
 
 public class Demonstration {
 
@@ -41,7 +41,7 @@ public class Demonstration {
 		
 		System.out.println("loading...");
 		smartSAXLoad.loadModelFromUri();
-		//System.out.println(smartSAXLoad.getModelImpl().getContents());
+		System.out.println(smartSAXLoad.getModelImpl().getContents().size());
 		System.out.println("loading finished");
 	}
 }

@@ -1,17 +1,17 @@
-package org.eclipse.emf.SmartSAX.impl;
+package org.eclipse.epsilon.labs.smartsax;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.emf.SmartSAX.effectiveMetamodel.EffectiveMetamodel;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
 
 public class SmartSAXLoad {
 

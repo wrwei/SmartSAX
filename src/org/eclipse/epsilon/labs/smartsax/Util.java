@@ -1,4 +1,4 @@
-package org.eclipse.emf.SmartSAX.impl;
+package org.eclipse.epsilon.labs.smartsax;
 
 import java.util.ArrayList;
 import java.util.Collection;

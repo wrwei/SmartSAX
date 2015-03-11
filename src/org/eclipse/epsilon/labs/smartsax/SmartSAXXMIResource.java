@@ -1,4 +1,4 @@
-package org.eclipse.emf.SmartSAX.impl;
+package org.eclipse.epsilon.labs.smartsax;
 
 import java.io.IOException;
 import java.util.ArrayList;

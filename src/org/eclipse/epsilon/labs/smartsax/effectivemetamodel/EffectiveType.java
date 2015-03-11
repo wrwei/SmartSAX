@@ -1,4 +1,4 @@
-package org.eclipse.emf.SmartSAX.effectiveMetamodel;
+package org.eclipse.epsilon.labs.smartsax.effectivemetamodel;
 
 import java.util.ArrayList;
 

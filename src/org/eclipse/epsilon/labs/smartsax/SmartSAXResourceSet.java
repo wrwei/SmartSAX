@@ -1,4 +1,4 @@
-package org.eclipse.emf.SmartSAX.impl;
+package org.eclipse.epsilon.labs.smartsax;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;

@@ -1,15 +1,15 @@
-package org.eclipse.emf.SmartSAX.impl;
+package org.eclipse.epsilon.labs.smartsax;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.eclipse.emf.SmartSAX.effectiveMetamodel.EffectiveMetamodel;
-import org.eclipse.emf.SmartSAX.effectiveMetamodel.EffectiveType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
+import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveType;
 
 public class EffectiveMetamodelReconciler {
 
