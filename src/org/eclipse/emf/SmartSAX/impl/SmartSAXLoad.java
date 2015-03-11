@@ -27,6 +27,8 @@ public class SmartSAXLoad {
 	protected boolean loadAllAttributes = false;
 	protected EffectiveMetamodelReconciler effectiveMetamodelReconciler = new EffectiveMetamodelReconciler();
 	
+	protected Resource modelImpl;
+	
 	public void addEffectiveMetamodel(EffectiveMetamodel effectiveMetamodel)
 	{
 		effectiveMetamodels.add(effectiveMetamodel);
@@ -56,6 +58,10 @@ public class SmartSAXLoad {
 			effectiveMetamodelReconciler.addPackage(ePackage);
 		}
 		
+		for(EffectiveMetamodel em: effectiveMetamodels)
+		{
+			effectiveMetamodelReconciler.addEffectiveMetamodel(em);
+		}
 		effectiveMetamodelReconciler.reconcile();
 		
 		objectsAndRefNamesToVisit = effectiveMetamodelReconciler.getObjectsAndRefNamesToVisit();
@@ -93,6 +99,11 @@ public class SmartSAXLoad {
 			model.unload();
 			throw new Exception(e);
 		}
+		modelImpl = model;
+	}
+	
+	public Resource getModelImpl() {
+		return modelImpl;
 	}
 
 	protected ResourceSet createResourceSet() {

@@ -33,12 +33,15 @@ public class Demonstration {
 		
 		
 		SmartSAXLoad smartSAXLoad = new SmartSAXLoad();
+		smartSAXLoad.addMetamodelFileUri("model/JDTAST.ecore");
+		smartSAXLoad.setModelUri("model/set0.xmi");
+
 		smartSAXLoad.addEffectiveMetamodel(DOM);
 		smartSAXLoad.preProcess();
 		
 		System.out.println("loading...");
-		smartSAXLoad.addMetamodelFileUri("model/JDTAST.ecore");
-		smartSAXLoad.setModelUri("model/set0.xmi");
+		smartSAXLoad.loadModelFromUri();
+		//System.out.println(smartSAXLoad.getModelImpl().getContents());
 		System.out.println("loading finished");
 	}
 }
