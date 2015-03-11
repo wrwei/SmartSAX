@@ -160,4 +160,37 @@ public class EffectiveMetamodel {
 			}
 		}
 	}
+	
+	public EffectiveType getFromAllOfKind(String typeName)
+	{
+		for(EffectiveType et: allOfKind)
+		{
+			if (et.getName().equals(typeName)) {
+				return et;
+			}
+		}
+		return null;
+	}
+	
+	public EffectiveType getFromAllOfType(String typeName)
+	{
+		for(EffectiveType et: allOfType)
+		{
+			if (et.getName().equals(typeName)) {
+				return et;
+			}
+		}
+		return null;
+	}
+	
+	public EffectiveType getFromTypes(String typeName)
+	{
+		for(EffectiveType et: types)
+		{
+			if (et.getName().equals(typeName)) {
+				return et;
+			}
+		}
+		return null;
+	}
 }
