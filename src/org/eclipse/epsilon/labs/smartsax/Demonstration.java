@@ -74,7 +74,7 @@ public class Demonstration {
 		Resource resource = resourceSet.createResource(URI.createFileURI(new File("model/set0.xmi").getAbsolutePath()));
 		Map<String, Object> loadOptions = new HashMap<String, Object>();
 		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODELS, effectiveMetamodels);
-		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, true);
+		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, false);
 		resource.load(loadOptions);
 		for (EObject o : resource.getContents()) {
 			System.out.println(o);
