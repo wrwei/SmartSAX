@@ -10,18 +10,18 @@ import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-public class SmartSAXModelResourceFactory extends XMIResourceFactoryImpl{
+public class SmartSAXResourceFactory extends XMIResourceFactoryImpl{
 
 	
 
 	protected SmartSAXXMIResource r;
 
 	
-	protected static SmartSAXModelResourceFactory instance;
+	protected static SmartSAXResourceFactory instance;
 	protected HashMap<URI, Resource> resourceMap;
 	
 	
-	public SmartSAXModelResourceFactory() {
+	public SmartSAXResourceFactory() {
 		resourceMap = new HashMap<URI, Resource>();
 	}
 	

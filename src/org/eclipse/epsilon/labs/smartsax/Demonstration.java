@@ -70,7 +70,7 @@ public class Demonstration {
 			resourceSet.getPackageRegistry().put(ePackage.getNsURI(), ePackage);
 		}
 		
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new SmartSAXModelResourceFactory());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new SmartSAXResourceFactory());
 		Resource resource = resourceSet.createResource(URI.createFileURI(new File("model/set0.xmi").getAbsolutePath()));
 		Map<String, Object> loadOptions = new HashMap<String, Object>();
 		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODELS, effectiveMetamodels);
