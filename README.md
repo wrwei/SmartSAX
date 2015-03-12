@@ -3,7 +3,7 @@
 SmartSAX aims at partial loading XMI-based EMF models to reduce the time and memory consumption for conventional EMF model loader
 
 
-For Demonstration, please run the main() method in the Demonstration class.
+For Demonstration, please go through the code in the Demonstration class.
 The static method generateEffectiveMetamodel() generates the effective metamodel needed to compute the GraBaTs 2009 query. 
 After the effective metamodel is generated, put them in an list, like below:
 
@@ -42,7 +42,7 @@ To partial load, construct the loadOptions, in which, put the effective metamode
 		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, false);
 ```
 
-Then call load(), SmartSAX will partial load with respect to the metamodels
+Then call load(), SmartSAX will partial load with respect to the effective metamodels
 ```java
 
 		resource.load(loadOptions);
