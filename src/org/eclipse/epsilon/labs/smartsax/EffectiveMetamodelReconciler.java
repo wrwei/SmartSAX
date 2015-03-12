@@ -1,6 +1,7 @@
 package org.eclipse.epsilon.labs.smartsax;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EClass;
@@ -30,9 +31,19 @@ public class EffectiveMetamodelReconciler {
 		effectiveMetamodels.add(effectiveMetamodel);
 	}
 	
+	public void addEffectiveMetamodels(ArrayList<EffectiveMetamodel> effectiveMetamodels)
+	{
+		this.effectiveMetamodels.addAll(effectiveMetamodels);
+	}
+	
 	public void addPackage(EPackage ePackage)
 	{
 		packages.add(ePackage);
+	}
+	
+	public void addPackages(Collection<?> packages)
+	{
+		this.packages.addAll((Collection<? extends EPackage>) packages);
 	}
 	
 	public HashMap<String, HashMap<String, ArrayList<String>>> getObjectsAndRefNamesToVisit() {

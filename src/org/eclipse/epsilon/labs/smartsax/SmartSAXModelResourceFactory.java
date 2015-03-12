@@ -1,6 +1,5 @@
 package org.eclipse.epsilon.labs.smartsax;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,49 +13,16 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 public class SmartSAXModelResourceFactory extends XMIResourceFactoryImpl{
 
 	
-	public boolean loadAllAttributes = true;
-
-	protected HashMap<String, HashMap<String, ArrayList<String>>> objectsAndRefNamesToVisit = new HashMap<String, HashMap<String,ArrayList<String>>>();
-	protected HashMap<String, HashMap<String, ArrayList<String>>> actualObjectsToLoad = new HashMap<String, HashMap<String,ArrayList<String>>>();
 
 	protected SmartSAXXMIResource r;
-	public void clearCollections()
-	{
-		objectsAndRefNamesToVisit.clear();
-		objectsAndRefNamesToVisit = null;
-		actualObjectsToLoad.clear();
-		actualObjectsToLoad = null;
-		r.clearCollections();
-	}
 
 	
 	protected static SmartSAXModelResourceFactory instance;
 	protected HashMap<URI, Resource> resourceMap;
 	
-	public void setObjectsAndRefNamesToVisit(
-			HashMap<String, HashMap<String, ArrayList<String>>> objectsAndRefNamesToVisit) {
-		this.objectsAndRefNamesToVisit = objectsAndRefNamesToVisit;
-	}
-	
-	public void setActualObjectsToLoad(
-			HashMap<String, HashMap<String, ArrayList<String>>> actualObjectsToLoad) {
-		this.actualObjectsToLoad = actualObjectsToLoad;
-	}
-	
-	/*
-	public static SmartSAXModelResourceFactory getInstance() {
-		if (instance == null) {
-			instance = new SmartSAXModelResourceFactory();
-		}
-		return instance;
-	}*/
 	
 	public SmartSAXModelResourceFactory() {
 		resourceMap = new HashMap<URI, Resource>();
-	}
-	
-	public void setLoadAllAttributes(boolean loadAllAttributes) {
-		this.loadAllAttributes = loadAllAttributes;
 	}
 	
 	@Override
@@ -76,9 +42,6 @@ public class SmartSAXModelResourceFactory extends XMIResourceFactoryImpl{
 			else {
 				resource = new SmartSAXXMIResource(uri); // <------------------------------------- Point of Change
 				r = (SmartSAXXMIResource) resource;
-				((SmartSAXXMIResource)resource).setLoadAllAttributes(loadAllAttributes);
-				((SmartSAXXMIResource)resource).setObjectsAndRefNamesToVisit(objectsAndRefNamesToVisit);
-				((SmartSAXXMIResource)resource).setActualObjectsToLoad(actualObjectsToLoad);
 			}
 			
 			if (resource instanceof XMLResource) {

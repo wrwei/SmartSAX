@@ -1,6 +1,8 @@
 package org.eclipse.epsilon.labs.smartsax;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +16,9 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
 
 public class Demonstration {
-
-	public static void main(String[] args) throws Exception {
+	
+	public static EffectiveMetamodel generateEffectiveMetamodel()
+	{
 		EffectiveMetamodel effectiveMetamodel = new EffectiveMetamodel("DOM");
 		
 		/* 
@@ -46,20 +49,16 @@ public class Demonstration {
 		effectiveMetamodel.addToAllOfKind("Modifier");
 		effectiveMetamodel.addAttributeToAllOfKind("Modifier", "static");
 		effectiveMetamodel.addAttributeToAllOfKind("Modifier", "public");
-		
-		/*
-		SmartSAXLoad smartSAXLoad = new SmartSAXLoad();
-		smartSAXLoad.addMetamodelFileUri("model/JDTAST.ecore");
-		smartSAXLoad.setModelUri("model/set0.xmi");
 
-		smartSAXLoad.addEffectiveMetamodel(effectiveMetamodel);
-		smartSAXLoad.reconcileEffectiveMetamodel();
+		return effectiveMetamodel;
+	}
+	
+	public static void demo_1 () throws IOException
+	{
+		ArrayList<EffectiveMetamodel> effectiveMetamodels = new ArrayList<EffectiveMetamodel>();
+		EffectiveMetamodel effectiveMetamodel = Demonstration.generateEffectiveMetamodel();
+		effectiveMetamodels.add(effectiveMetamodel);
 		
-		System.out.println("loading...");
-		smartSAXLoad.loadModelFromUri();
-		System.out.println(smartSAXLoad.getModelImpl().getContents().size());
-		System.out.println("loading finished");
-		*/
 		ResourceSet resourceSet = new ResourceSetImpl();
 		
 		ResourceSet ecoreResourceSet = new ResourceSetImpl();
@@ -71,14 +70,20 @@ public class Demonstration {
 			resourceSet.getPackageRegistry().put(ePackage.getNsURI(), ePackage);
 		}
 		
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new SmartSAXModelResourceFactory() /*new XMIResourceFactoryImpl()*/);
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new SmartSAXModelResourceFactory());
 		Resource resource = resourceSet.createResource(URI.createFileURI(new File("model/set0.xmi").getAbsolutePath()));
 		Map<String, Object> loadOptions = new HashMap<String, Object>();
-		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODELS, effectiveMetamodel);
+		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODELS, effectiveMetamodels);
+		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, true);
 		resource.load(loadOptions);
 		for (EObject o : resource.getContents()) {
 			System.out.println(o);
 		}
-		
+
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		Demonstration.demo_1();		
 	}
 }

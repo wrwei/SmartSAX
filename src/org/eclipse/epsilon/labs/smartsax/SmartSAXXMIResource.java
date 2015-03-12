@@ -17,6 +17,7 @@ public class SmartSAXXMIResource extends XMIResourceImpl{
 	public static final String OPTION_EFFECTIVE_METAMODELS = "effective-metamodels";
 	public static final String OPTION_RECONCILE = "reconcile";
 	public static final String OPTION_LOAD_ALL_ATTRIBUTES = "load-all-attributes";
+	public static final String OPTION_EFFECTIVE_METAMODEL_RECONCILER = "effective-metamodel-reconciler";
 	
 	public boolean loadAllAttributes = true;
 
@@ -38,35 +39,32 @@ public class SmartSAXXMIResource extends XMIResourceImpl{
 	@Override
 	public void load(Map<?, ?> options) throws IOException {
 		
-		List<EffectiveMetamodel> effectiveMetamodels = (List<EffectiveMetamodel>) options.get(OPTION_EFFECTIVE_METAMODELS);
-		if (effectiveMetamodels != null) {
-			/*
-			 EffectiveMetamodelReconciler reconciler = new EffectiveMetamodelReconciler();
-			 reconciler.reconcile(effectiveMetamodels, getResourceSet().getPackageRegistry().values());
-			 */
-		}
+		loadAllAttributes = (Boolean) options.get(OPTION_LOAD_ALL_ATTRIBUTES);
 		
+		ArrayList<EffectiveMetamodel> effectiveMetamodels = (ArrayList<EffectiveMetamodel>) options.get(OPTION_EFFECTIVE_METAMODELS);
+		if (effectiveMetamodels != null) {
+			EffectiveMetamodelReconciler effectiveMetamodelReconciler = new EffectiveMetamodelReconciler();
+			effectiveMetamodelReconciler.addEffectiveMetamodels(effectiveMetamodels);
+			effectiveMetamodelReconciler.addPackages(getResourceSet().getPackageRegistry().values());
+			effectiveMetamodelReconciler.reconcile();
+			actualObjectsToLoad = effectiveMetamodelReconciler.getActualObjectsToLoad();
+			objectsAndRefNamesToVisit = effectiveMetamodelReconciler.getObjectsAndRefNamesToVisit();
+		}
+		else {
+			EffectiveMetamodelReconciler effectiveMetamodelReconciler = (EffectiveMetamodelReconciler) options.get(OPTION_EFFECTIVE_METAMODEL_RECONCILER);
+			if (effectiveMetamodelReconciler != null) {
+				actualObjectsToLoad = effectiveMetamodelReconciler.getActualObjectsToLoad();
+				objectsAndRefNamesToVisit = effectiveMetamodelReconciler.getObjectsAndRefNamesToVisit();
+			}
+		}
 		super.load(options);
 	}
 	
-	public void setObjectsAndRefNamesToVisit(
-			HashMap<String, HashMap<String, ArrayList<String>>> objectsAndRefNamesToVisit) {
-		this.objectsAndRefNamesToVisit = objectsAndRefNamesToVisit;
-	}
-	
-	public void setActualObjectsToLoad(
-			HashMap<String, HashMap<String, ArrayList<String>>> actualObjectsToLoad) {
-		this.actualObjectsToLoad = actualObjectsToLoad;
-	}
 	
 	public SmartSAXXMIResource(URI uri) {
 		super(uri);
 	}
 	
-	public void setLoadAllAttributes(boolean loadAllAttributes) {
-		this.loadAllAttributes = loadAllAttributes;
-	}
-
 	
 	
 	@Override
