@@ -39,7 +39,7 @@ To partial load, construct the loadOptions, in which, put the effective metamode
 ```java
 		Map<String, Object> loadOptions = new HashMap<String, Object>();
 		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODELS, effectiveMetamodels);
-		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, true);
+		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, false);
 ```
 
 Then call load(), SmartSAX will partial load with respect to the metamodels
