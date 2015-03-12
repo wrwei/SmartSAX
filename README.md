@@ -11,6 +11,8 @@ After the effective metamodel is generated, put them in an list, like below:
 		ArrayList<EffectiveMetamodel> effectiveMetamodels = new ArrayList<EffectiveMetamodel>();
 		EffectiveMetamodel effectiveMetamodel = Demonstration.generateEffectiveMetamodel();
 		effectiveMetamodels.add(effectiveMetamodel);
+
+Then follow the conventional EMF process for registering metamodels, like below
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
 		
@@ -22,12 +24,19 @@ After the effective metamodel is generated, put them in an list, like below:
 			EPackage ePackage = (EPackage) o;
 			resourceSet.getPackageRegistry().put(ePackage.getNsURI(), ePackage);
 		}
-		
+
+Then follow the conventional EMF process for loading models, only difference is, create a SmartSAXResrouceFactory, like below
+
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new SmartSAXModelResourceFactory());
 		Resource resource = resourceSet.createResource(URI.createFileURI(new File("model/set0.xmi").getAbsolutePath()));
+		
+To partial load, construct the loadOptions, in which, put the effective metamodels, and the option for loading all attributes for types, like below
 		Map<String, Object> loadOptions = new HashMap<String, Object>();
 		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODELS, effectiveMetamodels);
 		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, true);
+
+Then call load(), SmartSAX will partial load with respect to the metamodels
+		
 		resource.load(loadOptions);
 		for (EObject o : resource.getContents()) {
 			System.out.println(o);
