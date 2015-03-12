@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
 
@@ -107,8 +108,8 @@ public class SmartSAXLoad {
 	}
 
 	protected ResourceSet createResourceSet() {
-		ResourceSet resourceSet = new SmartSAXResourceSet();
-		SmartSAXModelResourceFactory factory = SmartSAXModelResourceFactory.getInstance(); // <----------------------- point of change
+		ResourceSet resourceSet = new ResourceSetImpl();
+		SmartSAXModelResourceFactory factory = new SmartSAXModelResourceFactory();
 		factory.setLoadAllAttributes(loadAllAttributes);
 		factory.setObjectsAndRefNamesToVisit(objectsAndRefNamesToVisit);
 		factory.setActualObjectsToLoad(actualObjectsToLoad);

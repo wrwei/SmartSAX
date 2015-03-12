@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.xmi.XMLLoad;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLHelperImpl;
+import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
 
 public class SmartSAXXMIResource extends XMIResourceImpl{
-
+	
+	public static final String OPTION_EFFECTIVE_METAMODELS = "effective-metamodels";
+	public static final String OPTION_RECONCILE = "reconcile";
+	public static final String OPTION_LOAD_ALL_ATTRIBUTES = "load-all-attributes";
+	
 	public boolean loadAllAttributes = true;
 
 	protected HashMap<String, HashMap<String, ArrayList<String>>> objectsAndRefNamesToVisit = new HashMap<String, HashMap<String,ArrayList<String>>>();
@@ -36,6 +37,15 @@ public class SmartSAXXMIResource extends XMIResourceImpl{
 	
 	@Override
 	public void load(Map<?, ?> options) throws IOException {
+		
+		List<EffectiveMetamodel> effectiveMetamodels = (List<EffectiveMetamodel>) options.get(OPTION_EFFECTIVE_METAMODELS);
+		if (effectiveMetamodels != null) {
+			/*
+			 EffectiveMetamodelReconciler reconciler = new EffectiveMetamodelReconciler();
+			 reconciler.reconcile(effectiveMetamodels, getResourceSet().getPackageRegistry().values());
+			 */
+		}
+		
 		super.load(options);
 	}
 	

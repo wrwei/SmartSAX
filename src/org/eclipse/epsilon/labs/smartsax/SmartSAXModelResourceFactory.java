@@ -43,14 +43,15 @@ public class SmartSAXModelResourceFactory extends XMIResourceFactoryImpl{
 		this.actualObjectsToLoad = actualObjectsToLoad;
 	}
 	
+	/*
 	public static SmartSAXModelResourceFactory getInstance() {
 		if (instance == null) {
 			instance = new SmartSAXModelResourceFactory();
 		}
 		return instance;
-	}
+	}*/
 	
-	private SmartSAXModelResourceFactory() {
+	public SmartSAXModelResourceFactory() {
 		resourceMap = new HashMap<URI, Resource>();
 	}
 	
