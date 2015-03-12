@@ -4,6 +4,8 @@ SmartSAX aims at partial loading XMI-based EMF models to reduce the time and mem
 
 
 For Demonstration, please run the main() method in the Demonstration class.
+The static method generateEffectiveMetamodel() generates the effective metamodel needed to compute the GraBaTs 2009 query. 
+After the effective metamodel is generated, put them in an list, like below:
 
 
 		ArrayList<EffectiveMetamodel> effectiveMetamodels = new ArrayList<EffectiveMetamodel>();
