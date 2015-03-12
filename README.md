@@ -5,8 +5,28 @@ SmartSAX aims at partial loading XMI-based EMF models to reduce the time and mem
 
 For Demonstration, please run the main() method in the Demonstration class.
 
-In the Demonstration class, firstly we declare the EffectiveMetamodel by inserting types and features to it. This Effective Metamodel is actually the elements needed to compute the GraBaTe 2009 query. 
 
-After declaring the Effective Metamodel. We create an instance of SmartSAXLoad, we specify the metamodel file and the model file so that SmartSAXLoad can load both. We then add the effective metamodel to SmartSAXLoad and call reconcileEffectiveMetamodel() so that SmartSAXLoad knows which meta-class to create when it comes to the actual loading. 
-
-To load the file, simply call loadModelFromUri() in SmartSAXLoad.
+		ArrayList<EffectiveMetamodel> effectiveMetamodels = new ArrayList<EffectiveMetamodel>();
+		EffectiveMetamodel effectiveMetamodel = Demonstration.generateEffectiveMetamodel();
+		effectiveMetamodels.add(effectiveMetamodel);
+		
+		ResourceSet resourceSet = new ResourceSetImpl();
+		
+		ResourceSet ecoreResourceSet = new ResourceSetImpl();
+		ecoreResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		Resource ecoreResource = ecoreResourceSet.createResource(URI.createFileURI(new File("model/JDTAST.ecore").getAbsolutePath()));
+		ecoreResource.load(null);
+		for (EObject o : ecoreResource.getContents()) {
+			EPackage ePackage = (EPackage) o;
+			resourceSet.getPackageRegistry().put(ePackage.getNsURI(), ePackage);
+		}
+		
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new SmartSAXModelResourceFactory());
+		Resource resource = resourceSet.createResource(URI.createFileURI(new File("model/set0.xmi").getAbsolutePath()));
+		Map<String, Object> loadOptions = new HashMap<String, Object>();
+		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODELS, effectiveMetamodels);
+		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, true);
+		resource.load(loadOptions);
+		for (EObject o : resource.getContents()) {
+			System.out.println(o);
+		}
