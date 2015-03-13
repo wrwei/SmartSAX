@@ -20,8 +20,10 @@ Then follow the conventional EMF process for registering metamodels, like below
 	ResourceSet resourceSet = new ResourceSetImpl();
 	
 	ResourceSet ecoreResourceSet = new ResourceSetImpl();
-	ecoreResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-	Resource ecoreResource = ecoreResourceSet.createResource(URI.createFileURI(new File("model/JDTAST.ecore").getAbsolutePath()));
+	ecoreResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+		.put("*", new XMIResourceFactoryImpl());
+	Resource ecoreResource = ecoreResourceSet.
+		createResource(URI.createFileURI(new File("model/JDTAST.ecore").getAbsolutePath()));
 	ecoreResource.load(null);
 	for (EObject o : ecoreResource.getContents()) {
 		EPackage ePackage = (EPackage) o;
@@ -31,8 +33,10 @@ Then follow the conventional EMF process for registering metamodels, like below
 
 Then follow the conventional EMF process for loading models, only difference is, create a SmartSAXResrouceFactory, like below
 ```java
-	resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new SmartSAXModelResourceFactory());
-	Resource resource = resourceSet.createResource(URI.createFileURI(new File("model/set0.xmi").getAbsolutePath()));
+	resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().
+		put("xmi", new SmartSAXModelResourceFactory());
+	Resource resource = resourceSet.
+		createResource(URI.createFileURI(new File("model/set0.xmi").getAbsolutePath()));
 ```
 
 To partial load, construct the loadOptions, in which, put the effective metamodels, and the option for loading all attributes for types, like below
