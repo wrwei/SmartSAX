@@ -9,16 +9,25 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveFeature;
 import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
 import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveType;
 
 public class EffectiveMetamodelReconciler {
 
+	//effective metamodels
 	protected ArrayList<EffectiveMetamodel> effectiveMetamodels = new ArrayList<EffectiveMetamodel>();
+	
+	//epackages
 	protected ArrayList<EPackage> packages = new ArrayList<EPackage>();
 	
+	//objects and references to visit
 	protected HashMap<String, HashMap<String, ArrayList<String>>> objectsAndRefNamesToVisit = new HashMap<String, HashMap<String,ArrayList<String>>>();
+	
+	//actual objects to load
 	protected HashMap<String, HashMap<String, ArrayList<String>>> actualObjectsToLoad = new HashMap<String, HashMap<String,ArrayList<String>>>();
+	
+	//visited EClasses
 	protected ArrayList<EClass> visitedClasses = new ArrayList<EClass>();
 
 	
@@ -57,16 +66,27 @@ public class EffectiveMetamodelReconciler {
 	
 	public void reconcile()
 	{
+		//for each epackage
 		for(EPackage ePackage: packages)
 		{
+			//for each eclassifier
 			for(EClassifier eClassifier: ePackage.getEClassifiers())
 			{
+				//if eclassifier is a eclass
 				if (eClassifier instanceof EClass) {
+					
+					//if the class is an actual eclass to load, add to the map
 					if (actualObjectToLoad(ePackage, (EClass) eClassifier)) {
 						addActualObjectToLoad((EClass) eClassifier);
 					}
+					
+					//cast to eClass
 					EClass eClass = (EClass) eClassifier;
+					
+					//clear visited class
 					visitedClasses.clear();
+					
+					//visit EClass
 					visitEClass(eClass);
 				}
 			}
@@ -98,41 +118,66 @@ public class EffectiveMetamodelReconciler {
 			for(EffectiveType et: em.getAllOfKind())
 			{
 				ArrayList<String> features = actualObjectsToLoad.get(em.getName()).get(et.getName());
-				features.addAll(et.getAttributes());
-				features.addAll(et.getReferences());
+				for(EffectiveFeature ef: et.getAttributes())
+				{
+					features.add(ef.getName());
+				}
+				for(EffectiveFeature ef: et.getReferences())
+				{
+					features.add(ef.getName());
+				}
 			}
 			for(EffectiveType et: em.getAllOfType())
 			{
 				ArrayList<String> features = actualObjectsToLoad.get(em.getName()).get(et.getName());
-				features.addAll(et.getAttributes());
-				features.addAll(et.getReferences());
+				for(EffectiveFeature ef: et.getAttributes())
+				{
+					features.add(ef.getName());
+				}
+				for(EffectiveFeature ef: et.getReferences())
+				{
+					features.add(ef.getName());
+				}
 			}
 		}
 	}
 
 	
+	//returns true if the eclass is an actual object to load
 	public boolean actualObjectToLoad(EPackage ePackage, EClass eClass)
 	{
+		//for each effective metamodel in the container
 		for(EffectiveMetamodel em: effectiveMetamodels)
 		{
+			//if em's name is equal to epack's name
 			if (em.getName().equalsIgnoreCase(ePackage.getName())) {
+				
+				//for each type in all of kind
 				for(EffectiveType et: em.getAllOfKind())
 				{
+					//get the element name
 					String elementName = et.getName();
+					//if the element's name is equal to the eclass's name, return true
 					if (elementName.equals(eClass.getName())) {
 						return true;
 					}
 					
+					//get the eclass by name
 					EClass kind = (EClass) ePackage.getEClassifier(elementName);
+					
+					//if the eclass's super types contains the type also return true
 					if(eClass.getESuperTypes().contains(kind))
 					{
 						return true;
 					}
 				}
 				
+				//for each type in all of type
 				for(EffectiveType et: em.getAllOfType())
 				{
+					//get name
 					String elementName = et.getName();
+					//if name equals, return true
 					if (elementName.equals(eClass.getName())) {
 						return true;
 					}
@@ -192,16 +237,28 @@ public class EffectiveMetamodelReconciler {
 				{
 					//if class name equals, add all attributes and references
 					if (eClass.getName().equals(et.getName())) {
-						result.addAll(et.getAttributes());
-						result.addAll(et.getReferences());
+						for(EffectiveFeature ef: et.getAttributes())
+						{
+							result.add(ef.getName());
+						}
+						for(EffectiveFeature ef: et.getReferences())
+						{
+							result.add(ef.getName());
+						}
 						break loop1;
 					}
 					
 					//if eclass is a sub class of the kind, add all attributes and references
 					EClass kind = (EClass) ePackage.getEClassifier(et.getName());
 					if (eClass.getEAllSuperTypes().contains(kind)) {
-						result.addAll(et.getAttributes());
-						result.addAll(et.getReferences());
+						for(EffectiveFeature ef: et.getAttributes())
+						{
+							result.add(ef.getName());
+						}
+						for(EffectiveFeature ef: et.getReferences())
+						{
+							result.add(ef.getName());
+						}
 						break loop1;
 					}
 				}
@@ -212,8 +269,14 @@ public class EffectiveMetamodelReconciler {
 				{
 					//if class name equals, add all references and attributes
 					if (eClass.getName().equals(et.getName())) {
-						result.addAll(et.getAttributes());
-						result.addAll(et.getReferences());
+						for(EffectiveFeature ef: et.getAttributes())
+						{
+							result.add(ef.getName());
+						}
+						for(EffectiveFeature ef: et.getReferences())
+						{
+							result.add(ef.getName());
+						}
 						break loop2;
 					}
 				}
@@ -229,26 +292,36 @@ public class EffectiveMetamodelReconciler {
 		
 		//if this one is a live class, should addRef()
 		if (liveClass(eClass.getEPackage(), eClass.getName())) {
+			//add class to objectsAndRefNamesToVisit
 			addRef(eClass, null);
+			//add to placeholder if necessary
 			insertPlaceHolderOjbects(eClass.getEPackage(), eClass);
 		}
 		
+		//for each reference
 		for(EReference eReference: eClass.getEAllReferences())
 		{
+			//if the etype of the reference has not been visited
 			if (!visitedEClass((EClass) eReference.getEType())) {
+				//visit the etype
 				visitEClass((EClass) eReference.getEType());
 			}
 			
+			//if is live reference
 			if (liveReference(eReference)) {
+				//add class and reference to objectsAndRefNamesToVisit
 				addRef(eClass, eReference);
+				//insert placeholder if necessary
 				insertPlaceHolderOjbects(eClass.getEPackage(), eClass);
 			}
 		}
 		
+		//for every eclassifier
 		for(EClassifier every: eClass.getEPackage().getEClassifiers())
 		{
 			if (every instanceof EClass) {
 				EClass theClass = (EClass) every;
+				
 				if (theClass.getEAllSuperTypes().contains(eClass)) {
 					for(EReference eReference: theClass.getEAllReferences())
 					{
@@ -266,8 +339,11 @@ public class EffectiveMetamodelReconciler {
 		}
 	}
 
+	
+	//determines if a class is live class, this is used to generate the traversal path
 	public boolean liveClass(EPackage ePackage, String className)
 	{
+		//for each effective metamodel
 		for(EffectiveMetamodel em: effectiveMetamodels)
 		{
 			//get the package first
@@ -276,7 +352,7 @@ public class EffectiveMetamodelReconciler {
 				//for all of kinds
 				for(EffectiveType et: em.getAllOfKind())
 				{
-					//the element n ame
+					//the element name
 					String elementName = et.getName();
 					//if name equals return true
 					if (className.equals(elementName)) {
@@ -342,6 +418,7 @@ public class EffectiveMetamodelReconciler {
 		return false;
 	}
 	
+	//add classes and references to visit and fill up the objectsAndRefNamesToVisit map
 	public void addRef(EClass eClass, EReference eReference)
 	{
 		//get the epackage name
@@ -388,18 +465,28 @@ public class EffectiveMetamodelReconciler {
 		}
 	}
 
+	
+	
 	public void insertPlaceHolderOjbects(EPackage ePackage, EClass eClass)
 	{
+		//inserted 
 		boolean inserted = false;
+		//for each effective metamodel
 		for(EffectiveMetamodel em: effectiveMetamodels)
 		{
+			//get the matching package
 			if (em.getName().equalsIgnoreCase(ePackage.getName())) {
+				
+				//for each type in all of kind
 				for(EffectiveType et: em.getAllOfKind())
 				{
+					//if types match, return
 					if (et.getName().equals(eClass.getName())) {
 						inserted = true;
 						return;
 					}
+					
+					//if types match return
 					EClass kind = (EClass) ePackage.getEClassifier(et.getName());
 					for(EClass superClass: eClass.getEAllSuperTypes())
 					{
@@ -410,13 +497,18 @@ public class EffectiveMetamodelReconciler {
 					}
 
 				}
+				
+				//for each type in all of type
 				for(EffectiveType et: em.getAllOfType())
 				{
+					//if types match, return
 					if (et.getName().equals(eClass.getName())) {
 						inserted = true;
 						return;
 					}
 				}
+				
+				//if not inserted, add to types
 				if (!inserted) {
 					inserted = true;
 					em.addToTypes(eClass.getName());
@@ -424,14 +516,15 @@ public class EffectiveMetamodelReconciler {
 				}
 			}
 		}
+		//if not inserted, create effective metamodel and add to types
 		if (!inserted) {
 			EffectiveMetamodel newEffectiveMetamodel = new EffectiveMetamodel(ePackage.getName());
 			newEffectiveMetamodel.addToTypes(eClass.getName());
 			effectiveMetamodels.add(newEffectiveMetamodel);
-			
 		}
 	}
 
+	//test to see if the class has been visited
 	public boolean visitedEClass(EClass eClass)
 	{
 		for(EClass clazz: visitedClasses)
@@ -444,12 +537,17 @@ public class EffectiveMetamodelReconciler {
 	}
 
 
+	//returns true if the reference is live
 	public boolean liveReference(EReference eReference)
 	{
+		//if reference is containment, we are not looking into non-containment references
 		if(eReference.isContainment())
 		{
+			//get the etype
 			EClassifier eClassifier = eReference.getEType();
 			EClass etype = (EClass) eClassifier;
+			
+			//if etype is a live class, return true
 			if (liveClass(etype.getEPackage(), etype.getName())) {
 				return true;
 			}
