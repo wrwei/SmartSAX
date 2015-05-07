@@ -10,22 +10,10 @@ import org.xml.sax.helpers.DefaultHandler;
 public class SmartSAXXMILoadImpl extends XMILoadImpl{
 	public boolean loadAllAttributes = true;
 	
-//	protected ArrayList<ModelContainer> modelContainers = new ArrayList<ModelContainer>(); // <-------------------- point of change
-//
-//	public void addModelContainer(ModelContainer modelContainer) // <-------------------- point of change
-//	{
-//		modelContainers.add(modelContainer);
-//	}
-//	
-//	public void setModelContainers(ArrayList<ModelContainer> modelContainers) { // <-------------------- point of change
-//		this.modelContainers = modelContainers;
-//	}
-	
-//	protected HashMap<String, ArrayList<String>> objectsToLoad = new HashMap<String, ArrayList<String>>();
-//	protected HashMap<String, ArrayList<String>> emptyObjectsToLoad = new HashMap<String, ArrayList<String>>();
 	protected HashMap<String, HashMap<String, ArrayList<String>>> objectsAndRefNamesToVisit = new HashMap<String, HashMap<String,ArrayList<String>>>();
 	protected HashMap<String, HashMap<String, ArrayList<String>>> actualObjectsToLoad = new HashMap<String, HashMap<String,ArrayList<String>>>();
-	
+	protected HashMap<String, HashMap<String, ArrayList<String>>> typesToLoad = new HashMap<String, HashMap<String,ArrayList<String>>>();
+
 	public void clearCollections()
 	{
 		objectsAndRefNamesToVisit.clear();
@@ -33,17 +21,6 @@ public class SmartSAXXMILoadImpl extends XMILoadImpl{
 		actualObjectsToLoad.clear();
 		actualObjectsToLoad = null;
 	}
-	
-	
-//	public void setObjectsToLoad(
-//			HashMap<String, ArrayList<String>> objectsToLoad) {
-//		this.objectsToLoad = objectsToLoad;
-//	}
-//	
-//	public void setEmptyObjectsToLoad(
-//			HashMap<String, ArrayList<String>> emptyObjectsToLoad) {
-//		this.emptyObjectsToLoad = emptyObjectsToLoad;
-//	}
 	
 	public void setObjectsAndRefNamesToVisit(
 			HashMap<String, HashMap<String, ArrayList<String>>> objectsAndRefNamesToVisit) {
@@ -55,9 +32,13 @@ public class SmartSAXXMILoadImpl extends XMILoadImpl{
 		this.actualObjectsToLoad = actualObjectsToLoad;
 	}
 	
+	public void setTypesToLoad(
+			HashMap<String, HashMap<String, ArrayList<String>>> typesToLoad) {
+		this.typesToLoad = typesToLoad;
+	}
+	
 	public SmartSAXXMILoadImpl(XMLHelper helper) {
 		super(helper);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void setLoadAllAttributes(boolean loadAllAttributes) {
@@ -66,14 +47,13 @@ public class SmartSAXXMILoadImpl extends XMILoadImpl{
 	
 	@Override
 	protected DefaultHandler makeDefaultHandler() {
-		SmartSAXXMIHandler handler = new SmartSAXXMIHandler(resource, helper, options); // <-------------------- point of change
+		SmartSAXXMIHandler handler = new SmartSAXXMIHandler(resource, helper, options); 
 		handler.setLoadAllAttributes(loadAllAttributes);
-		//handler.setModelContainers(modelContainers); // <-------------------- point of change
-//		handler.setObjectsToLoad(objectsToLoad);
-//		handler.setEmptyObjectsToLoad(emptyObjectsToLoad);
+
 		handler.setObjectsAndRefNamesToVisit(objectsAndRefNamesToVisit);
 		handler.setActualObjectsToLoad(actualObjectsToLoad);
-		return handler; // <-------------------- point of change
+		handler.setTypesToLoad(typesToLoad);
+		return handler; 
 		
 	}
 

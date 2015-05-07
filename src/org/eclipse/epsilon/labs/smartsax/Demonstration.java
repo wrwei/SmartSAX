@@ -77,9 +77,10 @@ public class Demonstration {
 		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, false);
 		resource.load(loadOptions);
 		for (EObject o : resource.getContents()) {
-			System.out.println(o);
+			//System.out.println(o);
 		}
-
+		
+		System.out.println(resource.getContents().size());
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -23,6 +23,7 @@ public class SmartSAXXMIResource extends XMIResourceImpl{
 
 	protected HashMap<String, HashMap<String, ArrayList<String>>> objectsAndRefNamesToVisit = new HashMap<String, HashMap<String,ArrayList<String>>>();
 	protected HashMap<String, HashMap<String, ArrayList<String>>> actualObjectsToLoad = new HashMap<String, HashMap<String,ArrayList<String>>>();
+	protected HashMap<String, HashMap<String, ArrayList<String>>> typesToLoad = new HashMap<String, HashMap<String,ArrayList<String>>>();
 
 	protected boolean handleFlatObjects = false;
 	protected SmartSAXXMILoadImpl sxl;
@@ -49,12 +50,14 @@ public class SmartSAXXMIResource extends XMIResourceImpl{
 			effectiveMetamodelReconciler.reconcile();
 			actualObjectsToLoad = effectiveMetamodelReconciler.getActualObjectsToLoad();
 			objectsAndRefNamesToVisit = effectiveMetamodelReconciler.getObjectsAndRefNamesToVisit();
+			typesToLoad = effectiveMetamodelReconciler.getTypesToLoad();
 		}
 		else {
 			EffectiveMetamodelReconciler effectiveMetamodelReconciler = (EffectiveMetamodelReconciler) options.get(OPTION_EFFECTIVE_METAMODEL_RECONCILER);
 			if (effectiveMetamodelReconciler != null) {
 				actualObjectsToLoad = effectiveMetamodelReconciler.getActualObjectsToLoad();
 				objectsAndRefNamesToVisit = effectiveMetamodelReconciler.getObjectsAndRefNamesToVisit();
+				typesToLoad = effectiveMetamodelReconciler.getTypesToLoad();
 			}
 		}
 		super.load(options);
@@ -72,8 +75,10 @@ public class SmartSAXXMIResource extends XMIResourceImpl{
 		SmartSAXXMILoadImpl xmiLoadImpl = new SmartSAXXMILoadImpl(createXMLHelper());
 		sxl = xmiLoadImpl;
 		xmiLoadImpl.setLoadAllAttributes(loadAllAttributes);
+		
 		xmiLoadImpl.setObjectsAndRefNamesToVisit(objectsAndRefNamesToVisit);
 		xmiLoadImpl.setActualObjectsToLoad(actualObjectsToLoad);
+		xmiLoadImpl.setTypesToLoad(typesToLoad);
 		return xmiLoadImpl; 
 	}
 	
@@ -83,8 +88,10 @@ public class SmartSAXXMIResource extends XMIResourceImpl{
 	    {
 			SmartSAXXMILoadImpl xmiLoadImpl = new SmartSAXXMILoadImpl(new XMLHelperImpl(this));
 			xmiLoadImpl.setLoadAllAttributes(loadAllAttributes);
+			
 			xmiLoadImpl.setObjectsAndRefNamesToVisit(objectsAndRefNamesToVisit);
 			xmiLoadImpl.setActualObjectsToLoad(actualObjectsToLoad);
+			xmiLoadImpl.setTypesToLoad(typesToLoad);
 			return xmiLoadImpl;
 	    }
 	    else
