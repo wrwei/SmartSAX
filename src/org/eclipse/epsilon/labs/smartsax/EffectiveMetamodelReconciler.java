@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveFeature;
-import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
-import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveType;
+import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveFeature;
+import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveMetamodel;
+import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveType;
 
 public class EffectiveMetamodelReconciler {
 
@@ -680,7 +680,6 @@ public class EffectiveMetamodelReconciler {
 		}
 		//if not inserted, create effective metamodel and add to types
 		if (!inserted) {
-			System.err.println("not inserted");
 			addPlaceHolderObject(ePackage.getName(), eClass.getName());
 			EffectiveMetamodel newEffectiveMetamodel = new EffectiveMetamodel(ePackage.getName());
 			effectiveMetamodels.add(newEffectiveMetamodel);
