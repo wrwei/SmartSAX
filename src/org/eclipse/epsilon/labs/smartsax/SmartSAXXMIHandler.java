@@ -708,9 +708,12 @@ public class SmartSAXXMIHandler extends SAXXMIHandler{
 			  setFeatureValue(object, feature, value, -1);	
 		}
 		  else {
-			if (handlingFeature && shouldHandleFeatureForType(object, feature.getName())) {
-				setFeatureValue(object, feature, value, -1);
-			}
+//			if (handlingFeature && shouldHandleFeatureForType(object, feature.getName())) {
+//				setFeatureValue(object, feature, value, -1);
+//			}
+			  if (shouldHandleFeatureForType(object, feature.getName())) {
+					setFeatureValue(object, feature, value, -1);
+				}
 		}
 	  }
 
@@ -751,6 +754,6 @@ public class SmartSAXXMIHandler extends SAXXMIHandler{
 	      }
 	    }
 
-	    processObject(object);
-	  }
+		processObject(object);
+	}
 }

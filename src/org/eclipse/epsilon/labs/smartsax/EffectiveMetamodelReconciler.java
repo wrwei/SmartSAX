@@ -112,7 +112,7 @@ public class EffectiveMetamodelReconciler {
 							if(actualObjectsAndFeaturesToLoad.get(ePackage.getName()).get(eClassifier.getName()).contains(eReference.getName()))
 							{
 								EClass eType = (EClass) eReference.getEType();
-								addActualObjectToLoad(eType);
+								addTypesToLoad(eType);
 							}
 						}
 					}
@@ -139,11 +139,15 @@ public class EffectiveMetamodelReconciler {
 				ArrayList<String> features = actualObjectsAndFeaturesToLoad.get(em.getName()).get(et.getName());
 				for(EffectiveFeature ef: et.getAttributes())
 				{
-					features.add(ef.getName());
+					if (!features.contains(ef.getName())) {
+						features.add(ef.getName());
+					}
 				}
 				for(EffectiveFeature ef: et.getReferences())
 				{
-					features.add(ef.getName());
+					if (!features.contains(ef.getName())) {
+						features.add(ef.getName());
+					}
 				}
 			}
 			for(EffectiveType et: em.getAllOfType())
@@ -151,11 +155,15 @@ public class EffectiveMetamodelReconciler {
 				ArrayList<String> features = actualObjectsAndFeaturesToLoad.get(em.getName()).get(et.getName());
 				for(EffectiveFeature ef: et.getAttributes())
 				{
-					features.add(ef.getName());
+					if (!features.contains(ef.getName())) {
+						features.add(ef.getName());
+					}
 				}
 				for(EffectiveFeature ef: et.getReferences())
 				{
-					features.add(ef.getName());
+					if (!features.contains(ef.getName())) {
+						features.add(ef.getName());
+					}
 				}
 			}
 			for(EffectiveType et: em.getTypes())
@@ -163,13 +171,16 @@ public class EffectiveMetamodelReconciler {
 				ArrayList<String> features = typesToLoad.get(em.getName()).get(et.getName());
 				for(EffectiveFeature ef: et.getAttributes())
 				{
-					features.add(ef.getName());
+					if (!features.contains(ef.getName())) {
+						features.add(ef.getName());
+					}
 				}
 				for(EffectiveFeature ef: et.getReferences())
 				{
-					features.add(ef.getName());
+					if (!features.contains(ef.getName())) {
+						features.add(ef.getName());
+					}
 				}
-
 			}
 		}
 	}
@@ -234,6 +245,15 @@ public class EffectiveMetamodelReconciler {
 					String elementName = et.getName();
 					//if name equals, return true
 					if (elementName.equals(eClass.getName())) {
+						return true;
+					}
+					
+					//get the eclass by name
+					EClass kind = (EClass) ePackage.getEClassifier(elementName);
+					
+					//if the eclass's super types contains the type also return true
+					if(eClass.getESuperTypes().contains(kind))
+					{
 						return true;
 					}
 				}
@@ -339,6 +359,20 @@ public class EffectiveMetamodelReconciler {
 							result.add(ef.getName());
 						}
 						//break loop2;
+					}
+					
+					//if eclass is a sub class of the kind, add all attributes and references
+					EClass kind = (EClass) ePackage.getEClassifier(et.getName());
+					if (eClass.getEAllSuperTypes().contains(kind)) {
+						for(EffectiveFeature ef: et.getAttributes())
+						{
+							result.add(ef.getName());
+						}
+						for(EffectiveFeature ef: et.getReferences())
+						{
+							result.add(ef.getName());
+						}
+						//break loop1;
 					}
 				}
 			}

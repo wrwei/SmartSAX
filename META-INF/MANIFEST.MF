@@ -4,4 +4,6 @@ Bundle-Name: org.eclipse.emf.FlexSAX
 Bundle-SymbolicName: org.eclipse.epsilon.labs.smartsax;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Require-Bundle: org.eclipse.emf.ecore,
- org.eclipse.emf.ecore.xmi
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.epsilon.labs.effectivemetamodel;bundle-version="0.1.0"
+Export-Package: org.eclipse.epsilon.labs.smartsax

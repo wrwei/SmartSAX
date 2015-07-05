@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.epsilon.labs.smartsax.effectivemetamodel.EffectiveMetamodel;
+import org.eclipse.epsilon.labs.effectivemetamodel.impl.EffectiveMetamodel;
 
 public class Demonstration {
 	
@@ -72,12 +72,19 @@ public class Demonstration {
 		
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new SmartSAXResourceFactory());
 		Resource resource = resourceSet.createResource(URI.createFileURI(new File("model/set0.xmi").getAbsolutePath()));
+
+		EffectiveMetamodelReconciler effectiveMetamodelReconciler = new EffectiveMetamodelReconciler();
+		effectiveMetamodelReconciler.addPackages(resourceSet.getPackageRegistry().values());
+		effectiveMetamodelReconciler.addEffectiveMetamodels(effectiveMetamodels);
+		effectiveMetamodelReconciler.reconcile();
+		
 		Map<String, Object> loadOptions = new HashMap<String, Object>();
-		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODELS, effectiveMetamodels);
+		loadOptions.put(SmartSAXXMIResource.OPTION_EFFECTIVE_METAMODEL_RECONCILER, effectiveMetamodelReconciler);
 		loadOptions.put(SmartSAXXMIResource.OPTION_LOAD_ALL_ATTRIBUTES, false);
+		loadOptions.put(SmartSAXXMIResource.OPTION_RECONCILE_EFFECTIVE_METAMODELS, true);
 		resource.load(loadOptions);
 		for (EObject o : resource.getContents()) {
-			//System.out.println(o);
+			System.out.println(o);
 		}
 		
 		System.out.println(resource.getContents().size());
